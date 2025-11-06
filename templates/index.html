@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista Distributori</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-3">
+  <h1>Lista Distributori</h1>
+  <form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+      <input type="text" name="province" placeholder="Provincia (es. MI)" class="form-control" />
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary">Filtra</button>
+      <a href="/map" class="btn btn-outline-secondary">Mappa</a>
+    </div>
+  </form>
+
+  <table class="table table-bordered table-sm">
+    <thead><tr><th>ID</th><th>Nome</th><th>Provincia</th><th>Benzina</th><th>Diesel</th><th>Prezzo B</th><th>Prezzo D</th><th>Dettaglio</th></tr></thead>
+    <tbody>
+    {% for d in distributori %}
+      <tr>
+        <td>{{ d.id }}</td>
+        <td>{{ d.nome }}</td>
+        <td>{{ d.provincia }}</td>
+        <td>{{ d.benzina or d.quantita or "" }}</td>
+        <td>{{ d.diesel or "" }}</td>
+        <td>{{ d.prezzo_benzina }}</td>
+        <td>{{ d.prezzo_diesel }}</td>
+        <td><a href="/distributor/{{ d.id }}" class="btn btn-sm btn-info">Dettaglio</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

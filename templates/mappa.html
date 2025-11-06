@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mappa Distributori</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>#map{height:80vh;}</style>
+</head>
+<body>
+<div class="container mt-3">
+  <h1>Mappa Distributori</h1>
+  <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([45.5, 9.18], 9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+  }).addTo(map);
+
+  // Carica i distributori dall'API geo
+  fetch('/api/distributors/geo')
+    .then(r=>r.json())
+    .then(data=>{
+      data.forEach(d=>{
+        if (d.latitudine && d.longitudine) {
+          L.marker([d.latitudine, d.longitudine]).addTo(map)
+            .bindPopup(`<b>${d.nome}</b><br>${d.indirizzo || ''}<br>Provincia: ${d.provincia}`);
+        }
+      });
+    })
+    .catch(err=>console.error(err));
+</script>
+</body>
+</html>
